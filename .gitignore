@@ -1,0 +1,17 @@
+# Ignorer tous les dossiers node_modules dans le projet
+node_modules/
+
+# Fichiers de log
+*.log
+
+# Dossiers de build
+/build
+/dist
+
+# Fichiers temporaires
+*.tmp
+*.temp
+
+# Environnements de développement (IDEs)
+.vscode/
+.idea/
