@@ -1,12 +1,14 @@
 <template>
   <div class="step">
+    <h1>Ajouter un joueur</h1>
     <form @submit.prevent="submitStepOne">
       <div>
-        <label for="pseudo">Pseudo :</label>
-        <input type="text" id="pseudo" v-model="pseudo" required />
+        <input type="text" id="pseudo" placeholder="Saisir un pseudo" v-model="pseudo" required />
       </div>
       <div v-if="error" class="error">{{ error }}</div>
-      <button type="submit">Étape Suivante</button>
+      <button type="submit" class="button">
+        <i class="fa-solid fa-check"></i>
+      </button>
     </form>
   </div>
 </template>
@@ -34,12 +36,15 @@ export default {
 </script>
 
 <style scoped>
-.step {
-  max-width: 400px;
-  margin: 0 auto;
-}
 .error {
   color: red;
   margin-top: 10px;
+}
+
+form{
+  display: flex;
+  justify-content: center;
+  margin-top: 6rem;
+  gap: 1rem;
 }
 </style>

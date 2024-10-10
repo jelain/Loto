@@ -1,20 +1,72 @@
 /* frontend/src/assets/styles.css */
-
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+*{
     margin: 0;
     padding: 0;
 }
 
-h2 {
-    color: #333;
+#app {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
 }
 
-form {
-    background: #fff;
-    padding: 20px;
-    border-radius: 5px;
+.main-container{
+    display: flex;
+
+}
+
+.container {
+    flex: 1;
+    padding: 5rem 10rem;
+}
+
+.button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #FFFFFF;
+    height: 3.5rem;
+    width: 3.5rem;
+    border-radius: 100px;
+    text-decoration: none;
+    border: none;
+}
+
+.button:hover{
+    cursor: pointer;
+}
+
+.button:hover i{
+    color: #51BECC;
+}
+
+i {
+    font-size: 1.7rem;
+    color: #2D4044;
+}
+
+input[type="text"],
+input[type="number"]{
+    height: 3.5rem;
+    width: 25rem;
+    font-size: 1rem;
+    padding-left: 20px;
+    box-sizing: border-box;
+    border: none;
+    border-radius: 100px;
+    text-transform: lowercase;
+}
+
+input::placeholder{
+    font-weight: lighter;
+    text-transform: none;
+}
+
+input:focus{
+    outline: none;
+}
+
+h1::first-letter,p::first-letter {
+    text-transform: capitalize;
 }
 
 label {
@@ -22,29 +74,27 @@ label {
     margin-top: 10px;
 }
 
-input[type="text"],
-input[type="number"] {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    box-sizing: border-box;
-}
-
-button {
-    margin-top: 15px;
-    padding: 10px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    cursor: pointer;
-    width: 100%;
-}
-
-button:hover {
-    background-color: #218838;
-}
-
 .error {
     color: red;
     margin-top: 10px;
+}
+
+.grid{
+    display: flex;
+    gap: 10px;
+}
+
+.number{
+    background: #FFFFFF;
+    border-radius: 100px;
+    width: 2em;
+    height: 2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.number.star{
+    box-shadow: inset 0 0 0 1px #CDA462;
+    color: #CDA462;
 }

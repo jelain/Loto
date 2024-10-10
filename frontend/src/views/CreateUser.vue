@@ -1,5 +1,5 @@
 <template>
-  <div class="create-user">
+  <div class="container create-user">
     <component
         :is="currentStepComponent"
         @step1-completed="handleStep1Completed"
@@ -61,7 +61,7 @@ export default {
 
         // Après 2 secondes, rediriger vers la page d'accueil
         setTimeout(() => {
-          this.$router.push('/');  // Redirection vers la page d'accueil apres 2s
+          this.$router.push('/players');  // Redirection vers la page d'accueil apres 2s
         }, 2000);
 
       } catch (error) {
@@ -74,7 +74,5 @@ export default {
 </script>
 
 <style scoped>
-.create-user {
-  padding: 20px;
-}
+
 </style>

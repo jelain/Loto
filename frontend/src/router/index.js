@@ -2,18 +2,22 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import CreateUser from '../views/CreateUser.vue';
 import PlayersList from '../views/PlayersList.vue';
+import TirageLoterie from '../views/TirageLoterie.vue';
 import NotFoundPage from '../views/NotFoundPage.vue';
 
 const routes = [
     {
-        path: '/create-user',
-        name: 'CreateUser',
+        path: '/players',
+        component: PlayersList,
+    },
+    {
+        path: '/players/create',
         component: CreateUser
     },
     {
-        path: '/',
-        name: 'PlayersList',
-        component: PlayersList
+        path: '/tirage',
+        name: 'TirageLoterie',
+        component: TirageLoterie
     },
     {
         path: '/:pathMatch(.*)*',

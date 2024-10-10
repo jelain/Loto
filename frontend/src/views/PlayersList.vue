@@ -1,19 +1,37 @@
 <template>
-  <div class="players-list">
-    <h1>Liste des joueurs</h1>
-    <ol v-if="players.length > 0">
-      <li v-for="player in players" :key="player.id">
-        <strong>{{ player.pseudo }}</strong>
-        <div class="grille">
-          Grille:
-          {{player.grille}}
-          <strong>{{player.etoile}}</strong>
-        </div>
-      </li>
-    </ol>
-    <p v-else>Aucun joueur trouvé.</p>
+  <div class="container players-list">
+    <div class="header">
+      <h1>joueurs</h1>
+      <router-link to="/players/create" class="button">
+        <i class="fa-solid fa-plus"></i>
+      </router-link>
+    </div>
+    <table v-if="players.length > 0">
+      <thead>
+      <tr>
+        <th>pseudo</th>
+        <th>grille</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr v-for="player in players" :key="player.id">
+        <td>{{ player.pseudo }}</td>
+        <td>
+          <div class="grid">
+            <!-- Affiche chaque chiffre de la grille individuellement -->
+            <div v-for="(number, index) in player.grille" :key="index" class="number">
+              <p>{{ number }}</p>
+            </div>
+            <div v-for="(etoile, index) in player.etoile" :key="index" class="number star">
+              <p>{{ etoile }}</p>
+            </div>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <p v-else>aucun joueur trouvé.</p>
   </div>
-  <router-link to="/create-user">Créer un joueur</router-link>
 </template>
 
 <script>
@@ -39,15 +57,55 @@ export default {
 </script>
 
 <style scoped>
-.players-list {
-  padding: 20px;
-}
-.players-list .grille{
+.header{
   display: flex;
-  gap: 10px;
+  justify-content: space-between;
 }
 
-.grille strong{
-  color: red;
+th{
+  font-weight: normal;
+  background-color: #ececec;
+  text-transform: capitalize;
 }
+
+
+tr:nth-child(even) {
+  background-color: #ececec; /* Gris clair */
+}
+
+tr:nth-child(odd) {
+  background-color: #F4F4F4; /* Fond */
+}
+
+table {
+  width: 100%;
+  border-collapse: separate; /* Nécessaire pour que le border-radius fonctionne */
+  border-spacing: 0; /* Évite les espaces entre les cellules */
+  margin-top: 3em;
+}
+
+th, td {
+  border: none;
+  text-align: center;
+  height: 3em;
+}
+
+tr {
+  border-radius: 50px;
+}
+
+th:first-child, td:first-child {
+  border-top-left-radius: 50px;
+  border-bottom-left-radius: 50px;
+}
+
+th:last-child, td:last-child {
+  border-top-right-radius: 50px;
+  border-bottom-right-radius: 50px;
+}
+
+.grid{
+  justify-content: center;
+}
+
 </style>

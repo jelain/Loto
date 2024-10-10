@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="main-container">
     <HeaderNav/>
     <router-view />
   </div>
@@ -20,5 +20,6 @@ body {
   background-color: #f4f4f4;
   margin: 0;
   padding: 0;
+  color: #2D4044;
 }
 </style>
