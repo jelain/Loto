@@ -9,16 +9,22 @@
     <table v-if="players.length > 0">
       <thead>
       <tr>
+        <th>Sélectionner</th>
         <th>pseudo</th>
         <th>grille</th>
       </tr>
       </thead>
       <tbody>
       <tr v-for="player in players" :key="player.id">
+        <td>
+          <input
+              type="checkbox"
+              v-model="player.selected"
+          />
+        </td>
         <td>{{ player.pseudo }}</td>
         <td>
           <div class="grid">
-            <!-- Affiche chaque chiffre de la grille individuellement -->
             <div v-for="(number, index) in player.grille" :key="index" class="number">
               <p>{{ number }}</p>
             </div>
@@ -31,6 +37,8 @@
       </tbody>
     </table>
     <p v-else>aucun joueur trouvé.</p>
+
+    <button @click="handleSelectedPlayers">Voir les joueurs sélectionnés</button>
   </div>
 </template>
 
@@ -41,20 +49,39 @@ export default {
   name: 'PlayersList',
   data() {
     return {
-      players: []
+      players: [],
+      selectedPlayers: []
     };
   },
   async created() {
     try {
-      const response = await axios.get('http://localhost:5001/api/users');
-      this.players = response.data;
+      const response = await axios.get('http://localhost:5001/api/users/players');
+      this.players = response.data.map(player => ({
+        ...player,
+        selected: false
+      }));
     } catch (error) {
-      console.error('Erreur lors de la récupération des joueurs:', error.response ? error.response.data : error.message);
+      console.error('Erreur lors de la récupération des joueurs:', error);
       alert('Erreur lors de la récupération des joueurs.');
+    }
+  },
+  methods: {
+    handleSelectedPlayers() {
+      // Filtrer les joueurs sélectionnés
+      this.selectedPlayers = this.players.filter(player => player.selected);
+      console.log("Joueurs sélectionnés:", this.selectedPlayers);
+
+      // Sauvegarder dans localStorage
+      localStorage.setItem('selectedPlayers', JSON.stringify(this.selectedPlayers));
+
+      // Redirection vers la vue de tirage
+      this.$router.push('/tirage');
     }
   }
 };
 </script>
+
+
 
 <style scoped>
 .header{

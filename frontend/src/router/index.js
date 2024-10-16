@@ -2,8 +2,12 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import CreateUser from '../views/CreateUser.vue';
 import PlayersList from '../views/PlayersList.vue';
-import TirageLoterie from '../views/TirageLoterie.vue';
+import TirageLoterie from '../views/TirageLote.vue';
 import NotFoundPage from '../views/NotFoundPage.vue';
+import TirageClassementGenerate from "../views/TirageClassementGenerate.vue";
+import TirageClassementPlayer from "../views/TirageClassementPlayer.vue";
+import TirageClassementPlayerBot from "../views/TirageClassementPlayerBot.vue";
+import TestAPI from '../views/TestAPI.vue';
 
 const routes = [
     {
@@ -23,6 +27,26 @@ const routes = [
         path: '/:pathMatch(.*)*',
         name: 'NotFound',
         component: NotFoundPage
+    },
+    {
+        path: '/tirage-classement-generate',
+        name: 'TirageClassementGenerate',
+        component: TirageClassementGenerate
+    },
+    {
+        path: '/tirage-classement-player',
+        name: 'TirageClassementPlayer',
+        component: TirageClassementPlayer
+    },
+    {
+        path: '/tirage-classement-playerbot',
+        name: 'TirageClassementPlayerBot',
+        component: TirageClassementPlayerBot
+    },
+    {
+        path: '/testapi',
+        name: 'TestAPI',
+        component: TestAPI
     }
 ];
 

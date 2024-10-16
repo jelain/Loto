@@ -35,12 +35,80 @@ exports.creerjoueur = async (req, res) => {
     }
 };
 
-
 // Liste des joueurs
-exports.listerjoueurs = async (req, res) => {
+exports.listerUtilisateur = async (req, res) => {
     try {
         const joueurs = await User.findAll();
         res.status(200).json(joueurs);
+    } catch (error) {
+        console.error('Erreur lors de la récupération des joueurs:', error);
+        res.status(500).json({ message: 'Erreur du serveur lors de la récupération des joueurs.' });
+    }
+};
+
+// Supprimer les joueurs generer
+exports.supprimerJoueursGenerer = async (req, res) => {
+    try {
+        const joueursSupprimes = await User.supprimerJoueursGenerer();
+        const nombreSupprimes = joueursSupprimes.length;
+
+        res.status(200).json({
+            message: `${nombreSupprimes} joueur(s) généré(s) supprimé(s) avec succès.`,
+            joueursSupprimes
+        });
+    } catch (error) {
+        console.error('Erreur lors de la suppression des joueurs générés:', error);
+        res.status(500).json({ message: 'Erreur du serveur lors de la suppression des joueurs générés.' });
+    }
+};
+
+// Générer plusieurs joueurs aléatoires
+exports.genererJoueurs = async (req, res) => {
+    const { nombre } = req.body;
+
+    // Validation de l'entrée
+    if (!nombre || !Number.isInteger(nombre) || nombre < 1 || nombre > 1000) {
+        return res.status(400).json({ message: 'Veuillez fournir un nombre valide de joueurs à générer (1-1000).' });
+    }
+
+    try {
+        // Appeler la méthode de génération de joueurs dans le modèle User
+        const joueursGeneres = await User.genererJoueurs(nombre);
+
+        res.status(201).json({
+            message: `${joueursGeneres.length} joueur(s) généré(s) avec succès.`,
+            joueurs: joueursGeneres
+        });
+
+        // Si le nombre de joueurs générés est inférieur au nombre demandé, envoyer un message informatif
+        if (joueursGeneres.length < nombre) {
+            const nonGeneres = nombre - joueursGeneres.length;
+            return res.status(207).json({
+                message: `${joueursGeneres.length} joueur(s) généré(s) avec succès. ${nonGeneres} joueur(s) n'ont pas pu être généré(s) (pseudo dupliqué).`
+            });
+        }
+    } catch (error) {
+        console.error('Erreur lors de la génération des joueurs:', error);
+        res.status(500).json({ message: 'Erreur du serveur lors de la génération des joueurs.' });
+    }
+};
+
+// Lister les utilisateurs générés
+exports.listerBots = async (req, res) => {
+    try {
+        const bots = await User.findAllBot(); // Appeler la méthode pour récupérer les utilisateurs générés
+        res.status(200).json(bots); // Retourner les utilisateurs générés
+    } catch (error) {
+        console.error('Erreur lors de la récupération des bots:', error);
+        res.status(500).json({ message: 'Erreur du serveur lors de la récupération des utilisateurs générés.' });
+    }
+};
+
+// Lister les utilisateurs crée seulement
+exports.listerJusteJoueur = async (req, res) => {
+    try {
+        const players = await User.findJustPlayer(); // Appeler la méthode pour récupérer les joueurs (utilisateurs crées)
+        res.status(200).json(players); // Retourner les joueurs
     } catch (error) {
         console.error('Erreur lors de la récupération des joueurs:', error);
         res.status(500).json({ message: 'Erreur du serveur lors de la récupération des joueurs.' });

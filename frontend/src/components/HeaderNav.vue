@@ -13,6 +13,9 @@
         <li>
           <router-link to="/tirage" :class="{ 'active-link': $route.path === '/tirage' }">tirage</router-link>
         </li>
+        <li>
+          <router-link to="/testapi">testAPI</router-link>
+        </li>
       </ul>
     </nav>
   </header>

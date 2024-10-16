@@ -77,6 +77,101 @@ class User {
         }
     }
 
+    // Méthode statique pour supprimer tous les joueurs générés
+    static async supprimerJoueursGenerer() {
+        const query = `DELETE FROM users WHERE generer = $1 RETURNING *`;
+        const values = [true];
+
+        try {
+            const res = await pool.query(query, values);
+            return res.rows; // Retourne les joueurs supprimés
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    // Nouvelle méthode statique pour générer des joueurs
+    static async genererJoueurs(nombre) {
+        const joueurs = [];
+        const pseudosExistants = new Set(); // Pour éviter les doublons de pseudos
+
+        while (joueurs.length < nombre) {
+            const pseudo = `Joueur${Math.floor(Math.random() * 10000)}`;
+            if (pseudosExistants.has(pseudo)) continue; // Vérifier si le pseudo existe déjà
+
+            // Générer une grille de 5 numéros uniques (1-49)
+            const chiffresDisponibles = Array.from({ length: 49 }, (_, i) => i + 1);
+            const grille = [];
+            while (grille.length < 5) {
+                const indexAleatoire = Math.floor(Math.random() * chiffresDisponibles.length);
+                grille.push(chiffresDisponibles.splice(indexAleatoire, 1)[0]); // Sélectionner et retirer le nombre
+            }
+
+            // Générer 2 étoiles uniques (1-9)
+            const etoilesDisponibles = Array.from({ length: 9 }, (_, i) => i + 1);
+            const etoile = [];
+            while (etoile.length < 2) {
+                const indexAleatoire = Math.floor(Math.random() * etoilesDisponibles.length);
+                etoile.push(etoilesDisponibles.splice(indexAleatoire, 1)[0]); // Sélectionner et retirer l'étoile
+            }
+
+            const generer = true; // Indique que le joueur a été généré
+
+            // Créer un nouvel objet utilisateur avec pseudo, grille et étoiles
+            const joueur = new User(pseudo, grille, etoile, generer);
+            joueurs.push(joueur);
+            pseudosExistants.add(pseudo); // Ajouter le pseudo à l'ensemble
+        }
+
+        // Enregistrer tous les joueurs générés dans la base de données
+        const résultats = [];
+        for (const joueur of joueurs) {
+            try {
+                const résultat = await joueur.save();
+                résultats.push(résultat);
+            } catch (error) {
+                console.error(`Erreur lors de la sauvegarde de ${joueur.pseudo}: ${error.message}`);
+            }
+        }
+
+        return résultats; // Retourne tous les joueurs générés
+    }
+
+    // Méthode pour récupérer tous les joueurs
+    static async findAllBot() {
+        const query = `SELECT * FROM users WHERE generer = true;`; // Requete SQL
+        try {
+            const res = await pool.query(query);
+            // Convertir la grille de chaîne en array de nombres
+            return res.rows.map(user => ({
+                pseudo: user.pseudo,
+                grille: user.grille,
+                generer: user.generer,
+                dateCreation: user.date_creation,
+                etoile: user.etoile,
+            }));
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    // Méthode pour récupérer tous les joueurs
+    static async findJustPlayer() {
+        const query = `SELECT * FROM users WHERE generer = false;`; // Requete SQL
+        try {
+            const res = await pool.query(query);
+            // Convertir la grille de chaîne en array de nombres
+            return res.rows.map(user => ({
+                pseudo: user.pseudo,
+                grille: user.grille,
+                generer: user.generer,
+                dateCreation: user.date_creation,
+                etoile: user.etoile,
+            }));
+        } catch (error) {
+            throw error;
+        }
+    }
 }
 
 module.exports = User;

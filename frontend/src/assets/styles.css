@@ -65,7 +65,7 @@ input:focus{
     outline: none;
 }
 
-h1::first-letter,p::first-letter {
+h1::first-letter,p::first-letter,h2::first-letter {
     text-transform: capitalize;
 }
 
@@ -97,4 +97,80 @@ label {
 .number.star{
     box-shadow: inset 0 0 0 1px #CDA462;
     color: #CDA462;
+}
+
+/* POPUP */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.popup {
+    background-color: white;
+    padding: 2.5rem;
+    border-radius: 30px;
+    width: 22rem;
+}
+
+.popup h2{
+    margin-bottom: 1.2rem;
+}
+
+.popup p{
+    margin-bottom: 1.9rem;
+}
+
+.popup .button {
+    width: 100%;
+    cursor: pointer;
+}
+
+.popup .button-container{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: 1rem;
+}
+
+.button.yes,.button.start{
+    background-color: #F0F0F0;
+}
+
+.button.no{
+    border: solid 1px #F0F0F0;
+}
+
+.popup input[type="number"] {
+    -moz-appearance: textfield;
+    text-align: center;
+    padding: 0;
+    border-bottom : 1px solid #2D4044;
+    border-radius: 0;
+    width: 3rem;
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.input-container{
+    display: flex;
+    justify-content: center;
+}
+
+.button.start{
+    width: 70%;
+    text-align: center;
 }
