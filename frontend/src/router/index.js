@@ -7,7 +7,6 @@ import NotFoundPage from '../views/NotFoundPage.vue';
 import TirageClassementGenerate from "../views/TirageClassementGenerate.vue";
 import TirageClassementPlayer from "../views/TirageClassementPlayer.vue";
 import TirageClassementPlayerBot from "../views/TirageClassementPlayerBot.vue";
-import TestAPI from '../views/TestAPI.vue';
 
 const routes = [
     {
@@ -42,11 +41,6 @@ const routes = [
         path: '/tirage-classement-playerbot',
         name: 'TirageClassementPlayerBot',
         component: TirageClassementPlayerBot
-    },
-    {
-        path: '/testapi',
-        name: 'TestAPI',
-        component: TestAPI
     }
 ];
 

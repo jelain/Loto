@@ -1,7 +1,7 @@
 <template>
   <div class="container players-list">
     <div class="header">
-      <h1>joueurs</h1>
+      <h1>Joueurs</h1>
       <router-link to="/players/create" class="button">
         <i class="fa-solid fa-plus"></i>
       </router-link>
@@ -9,9 +9,9 @@
     <table v-if="players.length > 0">
       <thead>
       <tr>
-        <th>Sélectionner</th>
-        <th>pseudo</th>
-        <th>grille</th>
+        <th></th>
+        <th>Pseudo</th>
+        <th>Grille</th>
       </tr>
       </thead>
       <tbody>
@@ -19,7 +19,8 @@
         <td>
           <input
               type="checkbox"
-              v-model="player.selected"
+              :checked="player.selected"
+              @change="togglePlayerSelection(player)"
           />
         </td>
         <td>{{ player.pseudo }}</td>
@@ -36,52 +37,70 @@
       </tr>
       </tbody>
     </table>
-    <p v-else>aucun joueur trouvé.</p>
-
-    <button @click="handleSelectedPlayers">Voir les joueurs sélectionnés</button>
+    <p v-else>Aucun joueur trouvé.</p>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   name: 'PlayersList',
   data() {
     return {
-      players: [],
-      selectedPlayers: []
+      players: [], // Liste des joueurs récupérés
     };
+  },
+  computed: {
+    ...mapGetters('selectedPlayers', ['selectedPlayers']), // Récupération des joueurs sélectionnés de Vuex
   },
   async created() {
     try {
       const response = await axios.get('http://localhost:5001/api/users/players');
+      // Récupération des joueurs, par défaut selected est à false
       this.players = response.data.map(player => ({
         ...player,
-        selected: false
+        selected: false // Assurez-vous que par défaut, chaque joueur est décoché
       }));
     } catch (error) {
       console.error('Erreur lors de la récupération des joueurs:', error);
       alert('Erreur lors de la récupération des joueurs.');
     }
   },
+  async mounted() {
+    // Vider le tableau des joueurs sélectionnés dans Vuex
+    this.updateSelectedPlayers([]); // Réinitialiser selectedPlayers à vide
+  },
   methods: {
-    handleSelectedPlayers() {
-      // Filtrer les joueurs sélectionnés
-      this.selectedPlayers = this.players.filter(player => player.selected);
-      console.log("Joueurs sélectionnés:", this.selectedPlayers);
+    ...mapActions('selectedPlayers', ['updateSelectedPlayers']), // Action pour mettre à jour les joueurs sélectionnés
 
-      // Sauvegarder dans localStorage
-      localStorage.setItem('selectedPlayers', JSON.stringify(this.selectedPlayers));
+    togglePlayerSelection(player) {
+      // Inverse l'état local du joueur
+      player.selected = !player.selected;
 
-      // Redirection vers la vue de tirage
-      this.$router.push('/tirage');
-    }
-  }
+      // Créer une copie de l'objet joueur pour éviter les mutations indésirables
+      const playerCopy = { ...player }; // Clone du joueur pour ajouter à selectedPlayers
+
+      console.log(`Changement de sélection pour ${player.pseudo}: ${player.selected}`);
+      console.log('Objet player:', player); // Ajouté pour voir la structure de player
+
+      if (player.selected) {
+        // Si le joueur est sélectionné, l'ajouter à Vuex
+        const newSelection = [...this.selectedPlayers, playerCopy]; // Ajoute le joueur à la sélection
+        console.log("Ajouté à la sélection: ", playerCopy);
+        this.updateSelectedPlayers(newSelection); // Met à jour Vuex
+      } else {
+        // Si le joueur est décoché, le retirer de Vuex par pseudo
+        const updatedSelection = this.selectedPlayers.filter(p => p.pseudo !== player.pseudo); // Filtre le joueur par pseudo
+        console.log("Retiré de la sélection: ", player.pseudo); // Vérifie si player.pseudo est bien défini
+        console.log("Sélection mise à jour: ", updatedSelection);
+        this.updateSelectedPlayers(updatedSelection); // Met à jour Vuex
+      }
+    },
+  },
 };
 </script>
-
-
 
 <style scoped>
 .header{
@@ -135,4 +154,7 @@ th:last-child, td:last-child {
   justify-content: center;
 }
 
+input[type="checkbox"] {
+  width: 3rem;
+}
 </style>
