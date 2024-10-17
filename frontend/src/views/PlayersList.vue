@@ -49,19 +49,18 @@ export default {
   name: 'PlayersList',
   data() {
     return {
-      players: [], // Liste des joueurs récupérés
+      players: [],
     };
   },
   computed: {
-    ...mapGetters('selectedPlayers', ['selectedPlayers']), // Récupération des joueurs sélectionnés de Vuex
+    ...mapGetters('selectedPlayers', ['selectedPlayers']),
   },
   async created() {
     try {
       const response = await axios.get('http://localhost:5001/api/users/players');
-      // Récupération des joueurs, par défaut selected est à false
       this.players = response.data.map(player => ({
         ...player,
-        selected: false // Assurez-vous que par défaut, chaque joueur est décoché
+        selected: false
       }));
     } catch (error) {
       console.error('Erreur lors de la récupération des joueurs:', error);
@@ -69,33 +68,26 @@ export default {
     }
   },
   async mounted() {
-    // Vider le tableau des joueurs sélectionnés dans Vuex
-    this.updateSelectedPlayers([]); // Réinitialiser selectedPlayers à vide
+    this.updateSelectedPlayers([]);
   },
   methods: {
-    ...mapActions('selectedPlayers', ['updateSelectedPlayers']), // Action pour mettre à jour les joueurs sélectionnés
+    ...mapActions('selectedPlayers', ['updateSelectedPlayers']),
 
+    /**
+     * Inverse l'état de sélection d'un joueur et met à jour la sélection dans Vuex.
+     * @param {Object} player - L'objet joueur dont l'état de sélection doit être inversé.
+     * @returns {void}
+     */
     togglePlayerSelection(player) {
-      // Inverse l'état local du joueur
       player.selected = !player.selected;
-
-      // Créer une copie de l'objet joueur pour éviter les mutations indésirables
-      const playerCopy = { ...player }; // Clone du joueur pour ajouter à selectedPlayers
-
-      console.log(`Changement de sélection pour ${player.pseudo}: ${player.selected}`);
-      console.log('Objet player:', player); // Ajouté pour voir la structure de player
+      const playerCopy = { ...player };
 
       if (player.selected) {
-        // Si le joueur est sélectionné, l'ajouter à Vuex
-        const newSelection = [...this.selectedPlayers, playerCopy]; // Ajoute le joueur à la sélection
-        console.log("Ajouté à la sélection: ", playerCopy);
-        this.updateSelectedPlayers(newSelection); // Met à jour Vuex
+        const newSelection = [...this.selectedPlayers, playerCopy];
+        this.updateSelectedPlayers(newSelection);
       } else {
-        // Si le joueur est décoché, le retirer de Vuex par pseudo
-        const updatedSelection = this.selectedPlayers.filter(p => p.pseudo !== player.pseudo); // Filtre le joueur par pseudo
-        console.log("Retiré de la sélection: ", player.pseudo); // Vérifie si player.pseudo est bien défini
-        console.log("Sélection mise à jour: ", updatedSelection);
-        this.updateSelectedPlayers(updatedSelection); // Met à jour Vuex
+        const updatedSelection = this.selectedPlayers.filter(p => p.pseudo !== player.pseudo);
+        this.updateSelectedPlayers(updatedSelection);
       }
     },
   },
@@ -114,19 +106,18 @@ th{
   text-transform: capitalize;
 }
 
-
 tr:nth-child(even) {
-  background-color: #ececec; /* Gris clair */
+  background-color: #ececec;
 }
 
 tr:nth-child(odd) {
-  background-color: #F4F4F4; /* Fond */
+  background-color: #F4F4F4;
 }
 
 table {
   width: 100%;
-  border-collapse: separate; /* Nécessaire pour que le border-radius fonctionne */
-  border-spacing: 0; /* Évite les espaces entre les cellules */
+  border-collapse: separate;
+  border-spacing: 0;
   margin-top: 3em;
 }
 

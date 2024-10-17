@@ -2,9 +2,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import CreateUser from '../views/CreateUser.vue';
 import PlayersList from '../views/PlayersList.vue';
-import TirageLoterie from '../views/TirageLote.vue';
+import TirageLoterie from '../views/TirageLoto.vue';
 import NotFoundPage from '../views/NotFoundPage.vue';
-import TirageClassementGenerate from "../views/TirageClassementGenerate.vue";
+import TirageClassementBot from "../views/TirageClassementBot.vue";
 import TirageClassementPlayer from "../views/TirageClassementPlayer.vue";
 import TirageClassementPlayerBot from "../views/TirageClassementPlayerBot.vue";
 
@@ -23,24 +23,24 @@ const routes = [
         component: TirageLoterie
     },
     {
-        path: '/:pathMatch(.*)*',
-        name: 'NotFound',
-        component: NotFoundPage
+        path: '/tirage/bot',
+        name: 'TirageClassementBot',
+        component: TirageClassementBot
     },
     {
-        path: '/tirage-classement-generate',
-        name: 'TirageClassementGenerate',
-        component: TirageClassementGenerate
-    },
-    {
-        path: '/tirage-classement-player',
+        path: '/tirage/player',
         name: 'TirageClassementPlayer',
         component: TirageClassementPlayer
     },
     {
-        path: '/tirage-classement-playerbot',
+        path: '/tirage/playerbot',
         name: 'TirageClassementPlayerBot',
         component: TirageClassementPlayerBot
+    },
+    {
+        path: '/:pathMatch(.*)*',
+        name: 'NotFound',
+        component: NotFoundPage
     }
 ];
 

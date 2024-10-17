@@ -5,11 +5,11 @@
       <div>
         <input type="text" id="pseudo" placeholder="Saisir un pseudo" v-model="pseudo" required />
       </div>
-      <div v-if="error" class="error">{{ error }}</div>
       <button type="submit" class="button">
         <i class="fa-solid fa-check"></i>
       </button>
     </form>
+    <div v-if="error" class="error">{{ error }}</div>
   </div>
 </template>
 
@@ -23,13 +23,17 @@ export default {
     };
   },
   methods: {
+    /**
+     * Valide le pseudo saisi et émet un événement si la validation est réussie.
+     * @returns {void}
+     */
     submitStepOne() {
       if (this.pseudo.trim() === '') {
-        this.error = 'Le pseudo est requis.';
+        this.error = 'Le pseudo est requis.'; // Affiche un message d'erreur si le pseudo est vide
         return;
       }
       // Passer le pseudo au parent (CreateUser)
-      this.$emit('step1-completed', this.pseudo.trim());
+      this.$emit('step1-completed', this.pseudo.trim()); // Émet l'événement avec le pseudo trimé
     }
   }
 };
@@ -41,7 +45,7 @@ export default {
   margin-top: 10px;
 }
 
-form{
+form {
   display: flex;
   justify-content: center;
   margin-top: 6rem;
