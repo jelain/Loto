@@ -62,6 +62,30 @@ exports.supprimerJoueursGenerer = async (req, res) => {
     }
 };
 
+// Supprimer des joueurs
+exports.supprimerJoueurs = async (req, res) => {
+    const { pseudos } = req.body;
+
+    try {
+        if (pseudos && pseudos.length > 0) {
+            // Supprimer les joueurs spécifiques par leurs pseudos
+            const joueursSupprimes = await User.deletePlayerbyName(pseudos);
+            res.status(200).json({
+                message: `${joueursSupprimes} joueur(s) supprimé(s) avec succès.`,
+            });
+        } else {
+            // Supprimer tous les joueurs
+            const joueursSupprimes = await User.deleteAllPlayers();
+            res.status(200).json({
+                message: `Tous les joueurs ont été supprimés avec succès.`,
+            });
+        }
+    } catch (error) {
+        console.error('Erreur lors de la suppression des joueurs:', error);
+        res.status(500).json({ message: 'Erreur du serveur lors de la suppression des joueurs.' });
+    }
+};
+
 // Générer plusieurs joueurs aléatoires
 exports.genererJoueurs = async (req, res) => {
     const { nombre } = req.body;

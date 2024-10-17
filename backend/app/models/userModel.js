@@ -172,6 +172,36 @@ class User {
             throw error;
         }
     }
+
+    // Méthode statique pour supprimer des joueurs spécifiques par leurs pseudos
+    static async deletePlayerbyName(names) {
+        if (!names || names.length === 0) {
+            throw new Error("Aucun pseudo fourni pour la suppression.");
+        }
+
+        const query = `DELETE FROM users WHERE pseudo = ANY($1)`;
+        const values = [names]; // Le tableau de pseudos est passé comme paramètre
+
+        try {
+            const res = await pool.query(query, values);
+            return res.rowCount; // Retourne le nombre de lignes supprimées
+        } catch (error) {
+            throw error; // Propagation de l'erreur en cas d'échec
+        }
+    }
+
+    // Méthode statique pour supprimer tous les joueurs
+    static async deleteAllPlayers() {
+        const query = `DELETE FROM users`;
+        const values = []; // Aucune valeur n'est nécessaire pour cette requête
+
+        try {
+            const res = await pool.query(query, values);
+            return res.rowCount; // Retourne le nombre de lignes supprimées
+        } catch (error) {
+            throw error; // Propagation de l'erreur en cas d'échec
+        }
+    }
 }
 
 module.exports = User;
